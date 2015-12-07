@@ -1,0 +1,5 @@
+cron:
+- description: Send numbers of datasets created for the day at 4pm
+  url: /tasks/datasets/check
+  schedule: every day 07:00
+

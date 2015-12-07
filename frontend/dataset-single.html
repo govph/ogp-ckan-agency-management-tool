@@ -1,0 +1,232 @@
+{% extends 'frontend/index.html' %}
+{% block title %}{{ dataset.dataset_title|upper }} | Manager Tool{% endblock %}
+{% block content %}
+    <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+        {% if user.role == "OPENDATAADMIN" %}
+        <div class="row dataset-action">
+            <div class="col-lg-12">
+                <div class="btn-group btn-block pull-right">
+                    <button type="button" class="btn btn-block {% if dataset.status == 'FOR REVIEW' %}btn-primary{% elif dataset.status == 'SENT BACK' %}btn-danger{% elif dataset.status == 'FOR CLEAN UP' %}btn-warning{% elif dataset.status == 'PUBLISHED' %}btn-info{% elif dataset.status == 'FLAGGED FOR DELETION' %}btn-inverse{% endif %} dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                        {{ dataset.status }} <span class="pull-right"><i class="fa fa-fw fa-caret-down"></i></span>
+                    </button>
+                    <ul class="dropdown-menu" role="menu">
+                        {% if dataset.status == "FLAGGED FOR DELETION" %}
+                        <li><a onclick="deleteDataset();"><i class="fa fa-fw fa-check"></i> APPROVE</a></li>
+                        <li><a onclick="cancelDeleteDataset();"><i class="fa fa-fw fa-times"></i> CANCEL</a></li>
+                        {% else %}
+                        {% if dataset.status != 'FOR REVIEW' %}
+                        <li><a href="#"><i class="fa fa-fw fa-eye"></i> FOR REVIEW</a></li>
+                        {% endif %}
+                        {% if dataset.status != 'SENT BACK' %}
+                        <li><a onclick="sendBackDataset();"><i class="fa fa-fw fa-reply"></i> SEND BACK</a></li>
+                        {% endif %}
+                        {% if dataset.status != 'FOR CLEAN UP' %}
+                        <li><a onclick="forCleanUpDataset(this);" data-url="/dataset/{{ dataset.id }}/status"><i class="fa fa-fw fa-pencil"></i> FOR CLEAN UP</a></li>
+                        {% endif %}
+                        {% if dataset.status != 'PUBLISHED' %}
+                        <li><a onclick="publishedDataset(this);" data-url="/dataset/{{ dataset.id }}/status"><i class="fa fa-fw fa-check"></i> PUBLISH</a></li>
+                        {% endif %}
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+        {% elif user.role == "AGENCYADMIN" %}
+        <div class="row dataset-action">
+            <div class="col-lg-12">
+                <button type="button" class="btn btn-block {% if dataset.status == 'FOR REVIEW' %}btn-primary{% elif dataset.status == 'SENT BACK' %}btn-danger{% elif dataset.status == 'FOR CLEAN UP' %}btn-warning{% elif dataset.status == 'PUBLISHED' %}btn-info{% elif dataset.status == 'FLAGGED FOR DELETION' %}btn-inverse{% endif %}" style="cursor: default;">
+                    {{ dataset.status }}
+                </button>
+            </div>
+        </div>
+        {% endif %}
+        <div class="row">
+            <div class="col-lg-6">
+                <p class="dataset-sidebar-label">Date Created:</p>
+                <p class="dataset-sidebar-label">Last Updated:</p>
+                <p class="dataset-sidebar-label">Category:</p>
+            </div>
+            <div class="col-lg-6 text-right">
+                <p class="dataset-sidebar-value" title="{{ dataset.created }}" rel="tooltip">{{ dataset.created|to_date_format_only("%b %d, %Y") }}</p>
+                <p class="dataset-sidebar-value" title="{{ dataset.updated }}" rel="tooltip">{{ dataset.updated|to_date_format_only("%b %d, %Y") }}</p>
+                <p class="dataset-sidebar-value">{{ dataset.dataset_category }}</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12 versions">
+                <i class="fa fa-fw fa-copy"></i> VERSIONS
+                <hr>
+                {% for version in versions %}
+                <a href="{% if version.version == v %}javascript:void(0);{% elif version.current_version and version.version != v %}/dataset/{{ dataset.id }}{% else %}/dataset/{{ dataset.id }}?version_id={{ version.id }}&version_number={{ version.version }}&version_key={{ version.parent_key }}{% endif %}" class="version{% if version.version == v %} active{% endif %}"><i class="fa fa-fw fa-caret-right"></i> {{ version.name }} <span class="dataset-sidebar-value pull-right">{{ version.data.created|to_date_format_only("%m-%d-%Y") }}</span></a>
+                {% endfor %}
+            </div>
+        </div>
+        {% if dataset.status == "SENT BACK" %}
+        {#
+        <div class="row">
+            <div class="col-lg-12 versions">
+                <i class="fa fa-fw fa-comment-o"></i> COMMENT
+                <hr>
+                {% for comment in dataset.comment %}
+                <p class="no-margin"><i class="fa fa-fw fa-comment-o"></i> Posted on <strong>{{ comment.comment_date|to_date_format_only("%b %d, %Y") }}</strong> by <strong>{{ comment.comment_author }}</strong></p>
+                <p>{{ comment.comment }}</p>
+                {% endfor %}
+            </div>
+        </div>
+        #}
+        {% endif %}
+    </div>
+    <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9 dataset-container">
+        {% if dataset.status == "SENT BACK" and dataset.comment_for_sent_back %}
+        <div class="alert alert-warning">
+            <i class="fa fa-fw fa-warning"></i>
+            <strong>This dataset has been sent back for the following reason:</strong>
+            <p>{{dataset.comment_for_sent_back}}</p>
+        </div>
+        {% endif %}
+        <div class="bs-example bs-example-tabs" role="tabpanel" data-example-id="togglable-tabs">
+            <div class="row">
+                <div class="col-lg-10">
+                    <ul id="myTab" class="nav nav-tabs" role="tablist">
+                        <li role="presentation" class="active">
+                            <a href="#datasets" id="datasets-tab" role="tab" data-toggle="tab" aria-controls="for-review" aria-expanded="true">
+                                <i class="fa fa-lg fa-database"></i> DATASET
+                            </a>
+                        </li>
+                        <!-- <li role="presentation">
+                            <a href="#approved-feedback" role="tab" id="approved-feedback-tab" data-toggle="tab" aria-controls="approved-feedback">
+                                <i class="fa fa-lg fa-clock-o"></i> GROUPS
+                            </a>
+                        </li>
+                        <li role="presentation">
+                            <a href="#approved-feedback" role="tab" id="approved-feedback-tab" data-toggle="tab" aria-controls="approved-feedback">
+                                <i class="fa fa-lg fa-clock-o"></i> RELATED
+                            </a>
+                        </li> -->
+                    </ul>
+                </div>
+                <div class="col-lg-2 text-right">
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-warning dropdown-toggle" data-toggle="dropdown" aria-expanded="false">OPTIONS <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu" role="menu">
+                            <li>
+                                <a href="/dataset/{{ dataset.id }}/edit">
+                                    <i class="fa fa-fw fa-edit"></i> Edit Dataset
+                                </a>
+                            </li>
+                            <li>
+                                {% if user.role == "OPENDATAADMIN" %}
+                                <a onclick="deleteDataset();">
+                                    <i class="fa fa-fw fa-trash-o"></i> Delete Dataset
+                                </a>
+                                {% elif user.role == "AGENCYADMIN" and dataset.status != "FLAGGED FOR DELETION" %}
+                                <a onclick="flagDataset();">
+                                    <i class="fa fa-fw fa-trash-o"></i> Flag for Deletion
+                                </a>
+                                {% endif %}
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div id="myTabContent" class="tab-content">
+                        <div role="tabpanel" class="tab-pane fade in active" id="datasets" aria-labelledby="datasets-tab">
+                            <div class="well well-sm">Submitted By <strong>{{ dataset.department }}</strong></div>
+                            <h1>{{ dataset.dataset_title|upper }}</h1>
+                            <p class="dataset-description">{{ dataset.dataset_description }}</p>
+                            <div class="row">
+                                <div class="col-lg-9">
+                                    <h2>DATA AND RESOURCES</h2>
+                                </div>
+                                <div class="col-lg-3 top-20 text-right">
+                                    <button type="button" class="btn btn-warning" onclick="uploadResource();">ADD RESOURCE</button>
+                                </div>
+                            </div>
+                            {% if resources %}
+                            {% for resource in resources %}
+                            <div class="row">
+                                <div class="col-lg-1 text-center">
+                                    <img src="/images/resource-icon.png">
+                                </div>
+                                <div class="col-lg-9 no-padding-left">
+                                    <p class="resource-title">{{ resource.file_name }}</p>
+                                    <p class="resource-description">{{ resource.file_description }}</p>
+                                </div>
+                                <div class="col-lg-2 no-padding-left text-right">
+                                    <div class="btn-group">
+                                        <button type="button" class="btn btn-warning dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                            EXPLORE <span class="caret"></span>
+                                        </button>
+                                        <ul class="dropdown-menu" role="menu">
+                                            <li>
+                                                <a href="/resource/{{ resource.id }}"><i class="fa fa-fw fa-eye"></i> View Resource</a>
+                                            </li>
+                                            {% if resource.dataset_data %}
+                                            <li><a href="{{ resource.dataset_data.file_url }}" target="_blank"><i class="fa fa-fw fa-download"></i> Download</a></li>
+                                            {% endif %}
+                                            <li><a href="javascript:void(0);" onclick="uploadNewVersion(this);" data-resourceid="{{ resource.id }}" data-filename="{{ resource.file_name }}" data-filedescription="{{ resource.file_description }}" data-fileformat="{{ resource.file_format }}"><i class="fa fa-fw fa-upload"></i> Upload New Version</a></li>
+                                            <li><a href="/resource/{{ resource.id }}/edit"><i class="fa fa-fw fa-edit"></i> Edit Info</a></li>
+                                            <li><a onclick="deleteResource(this);" data-resourceid="{{ resource.id }}"><i class="fa fa-fw fa-trash-o"></i> Delete Resource</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr>
+                            {% endfor %}
+                            {% else %}
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="alert alert-info no-margin">
+                                        <i class="fa fa-fw fa-info"></i> No data and resources available.
+                                    </div>
+                                </div>
+                            </div>
+                            {% endif %}
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <h2>ADDITIONAL INFO</h2>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <table class="table table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <th>Field</th>
+                                                <th>Value</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for key, value in dataset.items()|sort %}
+                                            {% if key.lower() != "username" and key.lower() != "status" and key.lower() != "updated" and key.lower() != "dataset_category" and key.lower() != "dataset_description" and key.lower() != "user_id" and key.lower() != "created" and key.lower() != "department" and key.lower() != "dataset_title" and key.lower() != "id" and key.lower() != "type" and key.lower() != "comment" and key.lower() != "uacs_id" and key.lower() != "dataset_ckan_name" and value %}
+                                            <tr>
+                                                <td>{{ key.replace("_", " ")|title }}</td>
+                                                <td>{{ value }}</td>
+                                            </tr>
+                                            {% endif %}
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block script %}
+    <script>
+        var datasetID = "{{ dataset.id }}", xhr_request;
+    </script>
+    <script type="text/javascript" src="/js/dataset-single.js"></script>
+    {% if user.role == "OPENDATAADMIN" %}
+    <script type="text/javascript" src="/js/dataset-single-odtf.js"></script>
+    {% elif user.role == "AGENCYADMIN" %}
+    <script type="text/javascript" src="/js/dataset-single-aa.js"></script>
+    {% endif %}
+{% endblock %}

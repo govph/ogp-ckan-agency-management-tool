@@ -1,0 +1,70 @@
+<html>
+   <link rel="stylesheet" href="/css/comments-form-style.css">
+    <body>
+        {% if user %}
+            <div class="container form-container">
+
+                <form action="/api/v1/data" method="POST" target="_parent" enctype="multipart/form-data">
+                    <p>Thank you for visiting the Procurement Dashboard! Our goal is to make this dashboard informative and useful. Your feedback is valuable to us and we welcome any comments you may have regarding this project. Before submitting a feedback, you must read, agree with, and accept the <a target="_blank" href="http://data.gov.ph/philgeps-terms-and-conditions">Terms and Conditions</a></p>
+                    <input type="hidden" name="indexed_dgph_node_id" value="{{ dgph_node_id }}" />
+                    <input type="hidden" name="indexed_philgeps_org_id" value="{{ philgeps_org_id }}" />
+                    <input type="hidden" name="indexed_philgeps_bid_reference_number" value="{{ philgeps_bid_reference_number }}" />
+                    <input type="hidden" name="indexed_type" value="FEEDBACK" />
+                    <input type="hidden" name="indexed_status" value="PENDING" />
+                    <input type="hidden" name="indexed_agency_id" value="{{ philgeps_org_id }}" />
+                    <input type="hidden" name="redirect" value="{{ redirect }}" />
+                    <input type="hidden" name="indexed_project_id" value="{{ philgeps_bid_reference_number }}" />
+                    <input type="hidden" name="indexed_project_name" value="{{ philgeps_project_name }}" />
+                    <div class="form-input">
+                        <textarea name="unindexed_feedback" id="" cols="30" required="required" rows="10" placeholder="Your Feedback or Comment"></textarea>
+                    </div>
+                    <h3 class="form-input-heading color-yellow">Attach Photo or KML File</h3>
+                    <div class="form-input">
+                        <input type="file" name="file_attachment" />
+                    </div>
+                    <div class="form-input">
+                        <a href="#" class="tooltip">
+                            More information?
+                            <span>
+
+                                   FILES MUST BE LESS THAN 10 MB. ALLOWED FILE TYPES: PNG, GIF, JPG, JPEG, KML, KMZ
+                            </span>
+                        </a>
+                    </div>
+                    <div class="form-input form-input-checkbox">
+
+                        <label for=""><input type="checkbox" required="required" /> Agree to Terms and Conditions</label>
+                        <div class="clear"></div>
+                    </div>
+
+                    <div class="form-action-btns">
+                        <input type="submit" class="" value="Submit Feedback"/>
+                    </div>
+                </form>
+            </div>
+        {% else %}
+        <div class="container form-container login-btn-container">
+            <div class="form-action-btns">
+                <a class="button" href="/login?redirect={{ redirect }}" target="_parent">Login or Register to Submit Feedback</a>
+            </div>
+        </div>
+
+        {% endif %}
+        <br>
+        {% if feedbacks %}
+        <div class="container">
+            <section class="comments-section">
+                <h3>Feedback:</h3>
+                {% for feedback in feedbacks %}
+                <div class="comment-item">
+                    <!-- <label for=""></label> -->
+                    <p>{{ feedback.additional_data.feedback }}</p>
+                    <p>Submitted by: <span class="bold">{{ feedback.username }}</span></p>
+                </div>
+                {% endfor %}
+
+            </section>
+        </div>
+        {% endif %}
+    </body>
+</html>

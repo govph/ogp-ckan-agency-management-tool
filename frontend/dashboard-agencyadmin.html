@@ -1,0 +1,111 @@
+{% extends 'frontend/index.html' %}
+{% block title %}Dashboard | Manager Tool{% endblock %}
+{% block content %}
+    <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+        <div class="row">
+            <div class="col-lg-12">
+                <img class="img-responsive" src="/images/profile-icn.jpg">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <p class="dashboard-agency">{{ user.agency }}</p>
+                <h5>UACS: {{ user.uacs }}</h5>
+            </div>
+        </div>
+    </div>
+    <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9 dataset-container">
+        <div class="bs-example bs-example-tabs" role="tabpanel" data-example-id="togglable-tabs">
+            <div class="row">
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    <ul id="myTab" class="nav nav-tabs" role="tablist">
+                        <li role="presentation" class="active">
+                            <a href="#user-dataset" class="dashboard-tab-header" id="user-dataset-tab" role="tab" data-toggle="tab" aria-controls="for-review" aria-expanded="true">
+                                <i class="fa fa-lg fa-database"></i> Datasets
+                            </a>
+                        </li>
+                        <li role="presentation">
+                            <a href="#activity" class="dashboard-tab-header" role="tab" id="activity-tab" data-toggle="tab" aria-controls="activity">
+                                <i class="fa fa-lg fa-clock-o"></i> Activity
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="row">
+                <div id="myTabContent" class="tab-content">
+                    <div role="tabpanel" class="tab-pane fade in active" id="user-dataset" aria-labelledby="user-dataset-tab">
+                        <div class="col-lg-12">
+                            <div class="row">
+                                <div class="col-lg-6 no-padding-right">
+                                    <form method="POST" id="dataset-search-form">
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" placeholder="Search Dataset" disabled required>
+                                            <span class="input-group-btn">
+                                                <button type="submit" class="btn btn-warning" disabled>Search</button>
+                                            </span>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="col-lg-3 no-padding-right">
+                                    <select class="form-control" id="dataset-filter" disabled>
+                                        <option value="" selected="selected" disabled="disabled">Filter Datasets</option>
+                                        <option value="ALL">Show All</option>
+                                        <option value="FOR REVIEW">For Review</option>
+                                        <option value="SENT BACK">Sent Back</option>
+                                        <option value="FOR CLEAN UP">For Clean Up</option>
+                                        <option value="PUBLISHED">Published</option>
+                                        <option value="FLAGGED FOR DELETION">Flagged for Deletion</option>
+                                    </select>
+                                </div>
+                                <div class="col-lg-3">
+                                    <select class="form-control" id="dataset-order" disabled>
+                                        <option value="" selected="selected" disabled="disabled">Order By</option>
+                                        <option value="asc">Ascending</option>
+                                        <option value="desc">Descending</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-12 dashboard-datasets-list" id="user-dataset-dataset-list">
+                                    <h3 class="text-center"><i class="fa fa-2x fa-spin fa-circle-o-notch"></i></h3>
+                                    <h4 class="text-center">Loading Datasets</h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div role="tabpanel" class="tab-pane fade" id="activity" aria-labelledby="activity-tab">
+                        <div class="col-lg-12">
+                            <div class="row">
+                                <div class="col-lg-3">
+                                    <select class="form-control" id="activities-filter" disabled>
+                                        <!-- <option value="" selected="selected" disabled="disabled">Filter Activity</option> -->
+                                        <option value="ALL">Show All</option>
+                                        <!-- <option value="FOR REVIEW">For Review</option>
+                                        <option value="SENT BACK">Sent Back</option>
+                                        <option value="FOR CLEAN UP">For Clean Up</option>
+                                        <option value="PUBLISHED">Published</option> -->
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-12 dashboard-datasets-list" id="dashboard-updates">
+                                    <h3 class="text-center"><i class="fa fa-2x fa-spin fa-circle-o-notch"></i></h3>
+                                    <h4 class="text-center">Loading Activities</h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block script %}
+    <script>
+        var userID = "{{ user.id }}",
+        uacsID = "{{ user.uacs }}";
+    </script>
+    <script type="text/javascript" src="/js/timeago.js"></script>
+    <script type="text/javascript" src="/js/dataset-agencyadmin.js"></script>
+{% endblock %}

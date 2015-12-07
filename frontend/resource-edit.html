@@ -1,0 +1,75 @@
+{% extends 'frontend/index.html' %}
+{% block title %}{{ resource.file_name|upper }} | Manager Tool{% endblock %}
+{% block content %}
+    <div class="col-xs-8 col-xs-offset-2 col-sm-8 col-sm-offset-2 col-md-8 col-md-offset-2 col-lg-8 col-lg-offset-2">
+        <div class="bs-example bs-example-tabs" role="tabpanel" data-example-id="togglable-tabs">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div id="myTabContent" class="tab-content">
+                        <div role="tabpanel" class="tab-pane fade in active" id="datasets" aria-labelledby="datasets-tab">
+                            <div class="well well-sm">Submitted By <strong>{{ resource.department }}</strong></div>
+                                <form class="form-horizontal" enctype="multipart/form-data" action="/resource/{{ resource.id }}/edit" id="fuelux-wizard" method="post">
+                                    <div class="form-group">
+                                        <label for="inputEmail3" class="col-sm-3 control-label"><span class="text-danger">*</span> File</label>
+                                        <div class="col-sm-8" id="fileUploadContainer">
+                                            <button type="button" class="btn btn-sm btn-warning btn-file-action" onclick="showFileUpload()" style="display: none;">FILE</button>
+                                            <button type="button" class="btn btn-sm btn-warning btn-file-action" onclick="showLink()" style="display: none;">LINK</button>
+                                            <div class="file-link">
+                                                <input type="text" class="form-control" name="unindexed_dataset_data" placeholder="eg. http://www.source.com" style="width: 90%; float: left;" required="required" value="{{ resource.dataset_data.file_url }}">
+                                                <button type="button" class="btn btn-danger" style="margin-left: 5px;" tabindex="-1" onclick="hideFileLink(this);"><i class="fa fa-fw fa-times"></i></button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="inputEmail3" class="col-sm-3 control-label"><span class="text-danger">*</span> Name</label>
+                                        <div class="col-sm-8">
+                                            <input type="text" class="form-control step3" name="indexed_file_name" id="dataset-data-name" value="{{ resource.file_name }}" placeholder="eg. January 2015 Gold Prices" required>
+                                            <input type="hidden" name="update_resource" value="1">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="inputEmail3" class="col-sm-3 control-label"><span class="text-danger">*</span> Description</label>
+                                        <div class="col-sm-8">
+                                            <textarea class="form-control step3" name="unindexed_file_description" id="dataset-data-description" placeholder="Some useful notes about the data" rows="4" required>{{ resource.file_description }}</textarea>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="inputEmail3" class="col-sm-3 control-label"> Format</label>
+                                        <div class="col-sm-8">
+                                            <select class="form-control step3" name="indexed_file_format" id="file-format">
+                                                <option value="">Select a File Format</option>
+                                                <option value="CSV">CSV</option>
+                                                <option value="JSON">JSON</option>
+                                                <option value="JPG">JPG</option>
+                                                <option value="PDF">PDF</option>
+                                                <option value="PNG">PNG</option>
+                                                <option value="TSV">TSV</option>
+                                                <option value="XML">XML</option>
+                                                <option value="XLS">XLS</option>
+                                                <option value="XLSX">XLSX</option>
+                                                <option value="ZIP">ZIP</option>
+                                                <option value="OTHER">OTHER</option>
+                                        </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-sm-10 col-sm-offset-1">
+                                            <!-- <input type="submit" name="delete_dataset" class="btn btn-danger pull-left" value="DELETE DATASET"> -->
+                                            <button type="submit" class="btn btn-warning pull-right"> UPDATE RESOURCE</button>
+                                        </div>
+                                    </div>
+                                <form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block script %}
+    <script>
+        var width = "90%";
+    </script>
+    <script type="text/javascript" src="/js/file-upload.js"></script>
+{% endblock %}

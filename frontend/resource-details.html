@@ -1,0 +1,173 @@
+{% extends 'frontend/index.html' %}
+{% block title %}{{ resource.file_name|upper }} | Manager Tool{% endblock %}
+{% block content %}
+    <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+        <div class="row">
+            <div class="col-lg-6">
+                <p class="dataset-sidebar-label">Date Created:</p>
+                <p class="dataset-sidebar-label">Last Updated:</p>
+            </div>
+            <div class="col-lg-6 text-right">
+                <p class="dataset-sidebar-value" title="{{ resource.created }}" rel="tooltip">{{ resource.created|to_date_format_only("%b %d, %Y") }}</p>
+                <p class="dataset-sidebar-value" title="{{ resource.updated }}" rel="tooltip">{{ resource.updated|to_date_format_only("%b %d, %Y") }}</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12 versions">
+                <i class="fa fa-fw fa-copy"></i> VERSIONS
+                <hr>
+                {% for version in versions %}
+                <a href="{% if version.version == v %}javascript:void(0);{% elif version.current_version and version.version != v %}/resource/{{ resource.id }}{% else %}/resource/{{ resource.id }}?version_id={{ version.id }}&version_number={{ version.version }}&version_key={{ version.parent_key }}{% endif %}" class="version{% if version.version == v %} active{% endif %}"><i class="fa fa-fw fa-caret-right"></i> {{ version.name }} <span class="dataset-sidebar-value pull-right">{{ version.data.created|to_date_format_only("%m-%d-%Y") }}</span></a>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12 resources">
+                <i class="fa fa-fw fa-file-o"></i> RESOURCES
+                <hr>
+                {% for res in resources %}
+                <a href="{% if res.id == resource.id %}javascript:void(0);{% else %}/resource/{{ res.id }}{% endif %}" class="version{% if res.id == resource.id %} active{% endif %}"><i class="fa fa-fw fa-caret-right"></i> {{ res.file_name|upper }} <!-- <span class="dataset-sidebar-value pull-right">{{ res.created|to_date_format_only("%m-%d-%Y") }}</span> --></a>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9 dataset-container">
+        <div class="bs-example bs-example-tabs" role="tabpanel" data-example-id="togglable-tabs">
+            <div class="row">
+                <div class="col-lg-10">
+                    <ul id="myTab" class="nav nav-tabs" role="tablist">
+                        <li role="presentation" class="active">
+                            <a href="#datasets" id="datasets-tab" role="tab" data-toggle="tab" aria-controls="for-review" aria-expanded="true">
+                                <i class="fa fa-lg fa-file-o"></i> RESOURCE
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-lg-2 text-right">
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-warning dropdown-toggle" data-toggle="dropdown" aria-expanded="false">OPTIONS <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a href="/resource/{{ resource.id }}/edit">
+                                <i class="fa fa-fw fa-edit"></i> Edit Resource</a>
+                            </li>
+                            <li><a href="javascript:void(0);" onclick="uploadNewVersion(this);" data-resourceid="{{ resource.id }}" data-filename="{{ resource.file_name }}" data-filedescription="{{ resource.file_description }}" data-fileformat="{{ resource.file_format }}">
+                                <i class="fa fa-fw fa-upload"></i> Upload New Version</a>
+                            </li>
+                            <li><a href="{{ resource.dataset_data.file_url }}" target="_blank">
+                                <i class="fa fa-fw fa-download"></i> Download Resource</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+            <div class="col-lg-12">
+                    <div id="myTabContent" class="tab-content">
+                        <div role="tabpanel" class="tab-pane fade in active" id="datasets" aria-labelledby="datasets-tab">
+                            <h1>{{ resource.file_name|upper }}</h1>
+                            <p class="dataset-description">{{ resource.file_description }}</p>
+                            {% if resource.serving_url %}
+                            <img src="{{ resource.dataset_data.serving_url }}" class="img-responsive">
+                            {% else %}
+                            <a href="{{ resource.dataset_data.file_url }}" target="_blank" class="btn btn-block btn-success"><i class="fa fa-fw fa-download"></i> Download {{ resource.file_name }}</a>
+                            {% endif %}
+                        </div>
+                        <!-- <div role="tabpanel" class="tab-pane fade" id="approved-feedback" aria-labelledby="approved-feedback-tab">
+                            <h3 class="text-center"><i class="fa fa-2x fa-spin fa-circle-o-notch"></i></h3>
+                            <h4 class="text-center">Loading Feedback</h4>
+                            <p>{{ resource.dataset_description }}</p>
+                        </div>
+                        <div role="tabpanel" class="tab-pane fade" id="disapproved-feedback" aria-labelledby="disapproved-feedback-tab">
+                            <h3 class="text-center"><i class="fa fa-2x fa-spin fa-circle-o-notch"></i></h3>
+                            <h4 class="text-center">Loading Feedback</h4>
+                        </div> -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form class="form-horizontal" enctype="multipart/form-data" action="/api/v1/data" id="fuelux-wizard" method="post">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="myModalLabel">Add New Resource</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="inputEmail3" class="col-sm-3 control-label"><span class="text-danger">*</span> File</label>
+                            <div class="col-sm-8">
+                                <input type="file" class="form-control step2" name="file_dataset_data" id="dataset-data" placeholder="A descriptive title" required>
+                                <input type="hidden" name="type" value="RESOURCE">
+                                <input type="hidden" name="indexed_dataset_id" value="{{ resource.id }}">
+                                <input type="hidden" name="redirect" value="/dataset/{{ resource.id }}">
+                                <input type="hidden" name="agency_id" value="{{ user.agency_id }}">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputEmail3" class="col-sm-3 control-label"><span class="text-danger">*</span> Name</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control step2" name="indexed_file_name" id="dataset-data-name" placeholder="eg. January 2015 Gold Prices" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputEmail3" class="col-sm-3 control-label"><span class="text-danger">*</span> Description</label>
+                            <div class="col-sm-8">
+                                <textarea class="form-control step2" name="unindexed_file_description" id="dataset-data-description" placeholder="Some useful notes about the data" rows="4" required></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-warning">Save Resource</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="addNewVersionModal" tabindex="-1" role="dialog" aria-labelledby="addNewVersionModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form class="form-horizontal" enctype="multipart/form-data" id="addNewVersionForm" method="post">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="addNewVersionModalLabel">Upload New Version</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="inputEmail3" class="col-sm-3 control-label"><span class="text-danger">*</span> File</label>
+                            <div class="col-sm-8" id="addNewVersionFormContainer">
+                                <button type="button" class="btn btn-warning btn-file-action" id="dataset-file-upload-btn" onclick="showFileUpload()">FILE</button>
+                                <button type="button" class="btn btn-warning btn-file-action" id="dataset-file-link-btn" onclick="showLink()">LINK</button>
+                                <input type="hidden" name="update_resource" value="1">
+                                <input type="hidden" name="indexed_type" value="RESOURCE">
+                                <input type="hidden" name="indexed_dataset_id" value="{{ resource.dataset_id }}">
+                                <input type="hidden" name="redirect" id="addNewVersion_redirect">
+                                <input type="hidden" name="indexed_agency_id" value="{{ user.agency_id }}">
+                                <input type="hidden" name="indexed_agency_name" value="{{ user.agency_name }}">
+                                <input type="hidden" name="indexed_file_name" id="addNewVersion_file_name">
+                                <input type="hidden" name="unindexed_file_description" id="addNewVersion_file_description">
+                                <input type="hidden" name="indexed_file_format" id="addNewVersion_file_format">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-warning">Upload Resource</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block script %}
+    <script>
+        var width = "86%";
+        $(document).ready(function(){
+            $("[rel=tooltip]").tooltip();
+        });
+    </script>
+    <script type="text/javascript" src="/js/file-upload.js"></script>
+{% endblock %}

@@ -1,0 +1,60 @@
+{% extends 'frontend/index.html' %}
+{% block title %}Login | Manager Tool{% endblock %}
+{% block content %}
+    <!-- <div id="fb-root"></div> -->
+    <div class="col-xs-10 col-xs-offset-1 col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3 col-lg-6 col-lg-offset-3 login-form">
+        <h2>LOGIN</h2>
+        <!-- <div class="fb-login-button" scope="public_profile,email" data-max-rows="1" data-size="large" data-show-faces="false" data-auto-logout-link="true"></div> -->
+        <form method="POST" id="loginAccountForm">
+            <div class="form-group">
+                <label for="exampleInputEmail1">EMAIL</label>
+                <input type="email" name="email" class="form-control input-lg" required>
+                {% if redirect %}
+                <input type="hidden" name="redirect" value="{{ redirect }}">
+                {% endif %}
+            </div>
+            <div class="form-group">
+                <label for="exampleInputPassword1">PASSWORD</label>
+                <input type="password" name="password" class="form-control input-lg" required>
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-lg btn-inverse">LOGIN</button>
+            </div>
+            <a href="/password/reset">Forgot your password?</a> / <a href="/register">Register</a>
+        </form>
+    </div>
+{% endblock %}
+{% block script %}
+// <script>
+//     window.fbAsyncInit = function() {
+//         FB.init({
+//           appId      : '1602936683288030',
+//           xfbml      : true,
+//           version    : 'v2.3'
+//         });
+//         FB.getLoginStatus(function(response) {
+//             console.log(response);
+//             FB.api('/me', function(response) {
+//                 console.log(JSON.stringify(response));
+//             });
+//         });
+//     };
+
+//     (function(d, s, id){
+//      var js, fjs = d.getElementsByTagName(s)[0];
+//      if (d.getElementById(id)) {return;}
+//      js = d.createElement(s); js.id = id;
+//      js.src = "//connect.facebook.net/en_US/sdk.js";
+//      fjs.parentNode.insertBefore(js, fjs);
+//     }(document, 'script', 'facebook-jssdk'));
+// </script>
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $('input[name=email]').focus();
+        });
+        $("#loginAccountForm").submit(function (){
+            $(".form-control").prop("readonly", true);
+            $(".btn-inverse").prop("disabled", true).html($("<i>", { class: "fa fa-spin fa-circle-o-notch" })).append(" LOGIN");
+        });
+    </script>
+{% endblock %}

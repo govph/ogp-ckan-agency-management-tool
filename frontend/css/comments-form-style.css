@@ -1,0 +1,228 @@
+@import url(http://fonts.googleapis.com/css?family=Roboto:400,400italic,500,700);
+@font-face {
+  font-family: 'Verdana';
+  src: url('../fonts/Verdana.ttf'); /* IE9 Compat Modes */
+}
+html { 
+    /*padding: 50px; */
+    padding: 0;
+}
+body {
+    padding: 0;
+    margin: 0;
+    background-color: #4a4a4a;
+    font-family: "Roboto",sans-serif, Arial, Open Sans;
+}
+.bold { font-weight: bold; }
+.clear { clear: both; }
+.container {
+    width: 100%;
+    margin: 0 auto;
+}
+.form-container { background-color: #4a4a4a; }
+.left { float: left; }
+label, p, 
+input[type="file"],
+.form-input-heading { color: white; }
+p {
+  font-family: "Roboto";
+  font-size: 1em;
+  line-height: 1.6;
+  font-weight: normal;
+}
+p a { 
+    color: white; 
+    line-height: 1.2em;
+    font-size: 0.85em;
+    text-decoration: underline; 
+}
+form {
+    padding: 30px;
+    margin: 0;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+input[type="text"], 
+input[type="tel"],
+input[type="url"],
+input[type="submit"],
+select, 
+textarea { width: 100%; }
+
+input[type="text"], 
+input[type="tel"],
+select {
+    height: 50px;
+    box-sizing: border-box;
+}
+
+input[type="text"], 
+input[type="tel"],
+input[type="url"],
+textarea
+{
+    padding: 10px; 
+    font-size: 16px;
+    border: none;
+}
+
+input[type="submit"] {
+    color: #857241;
+    border-top: 1px solid #fde096;
+    border-bottom: none;
+    border-left: none;
+    border-right: none;
+    padding: 15px 0; 
+    font-weight: 800;
+    font-size: 14px;
+    text-transform: uppercase;
+    background-color: #ffc425;
+}
+textarea {  margin-top: 50px;  font-family: "Verdana"; }
+.form-input { margin: 25px 0; }
+.form-input input[type="radio"],
+.form-input input[type="checkbox"],
+.form-input label {
+    float: left;
+}
+.form-input input[type="checkbox"],
+.form-input input[type="radio"]{ height: 20px; }
+.form-input label { 
+    font-size: 14px;
+    margin-left: 15px;
+    line-height: 26px;
+}
+.form-input-heading { 
+    color: #ffc425;
+    font-size: 18px; 
+    text-transform: uppercase;
+}
+.form-input-checkbox label { margin-left: 5px; }
+.login-btn-container { padding: 30px;}
+/** STYLES FOR COMMENTS **/
+.comments-section { 
+    color: white;
+    padding: 0 30px;
+}
+.comments-section h3 { margin-bottom: 25px; }
+.comment-item {
+    padding: 15px 10px;
+    border-top: 1px solid #524F4F;
+}
+.comment-item label, .comment-item p { 
+    font-size: 14px;
+    color: white; 
+}
+.comment-item label {
+    line-height: 24px;
+    text-transform: uppercase;
+}
+
+.comment-item p {
+    line-height: 21px;
+}
+.form-action-btns input[type="submit"] {
+    width: 20%;
+    font-weight: bold;
+    padding: 15px;
+    box-sizing: border-box;
+}
+
+a.button {
+    color: #857241;
+    border-top: 1px solid #fde096;
+    border-bottom: none;
+    border-left: none;
+    border-right: none;
+    padding: 15px 0; 
+    font-weight: bold;
+    font-size: 14px;
+    text-transform: uppercase;
+    background-color: #ffc425;
+    text-decoration: none;
+    padding: 20px;
+}
+
+a.button:hover, a.button:focus {
+    color: #4B3F24;
+    border-top: 1px solid #fde096;
+    border-bottom: none;
+    border-left: none;
+    border-right: none;
+    padding: 15px 0; 
+    font-weight: bold;
+    font-size: 14px;
+    text-transform: uppercase;
+    background-color: #ffc425;
+    text-decoration: none;
+    padding: 20px;
+}
+/** tool tip **/
+a.tooltip {
+    outline:none; 
+    color: white; 
+    text-decoration: none; 
+    font-family: "Roboto"; 
+    font-style: italic; 
+    font-weight: 400;
+}
+a.tooltip strong {line-height:30px;}
+a.tooltip:hover {
+    text-decoration:none;
+    cursor: help;
+} 
+a.tooltip span {
+    z-index:10;display:none; 
+    padding:14px 20px;
+    margin-top:-70px; 
+    margin-left:-125px;
+    width:300px; line-height:16px;
+}
+a.tooltip:hover span{
+    display:inline; 
+    position:absolute; 
+    color:#111;
+    background:#ffc425;
+}
+a.tooltip:hover span:before {
+    content: " ";
+    position: absolute;
+    bottom: -10px;
+    border-left: 20px solid transparent;
+	border-right: 20px solid transparent;
+	border-top: 20px solid #ffc425;
+}
+.callout {
+    z-index:20;
+    position:absolute;
+    top:10px;
+    border:0;
+    left:-12px;
+}
+    
+/*CSS3 extras*/
+a.tooltip span
+{
+    border-radius:4px;
+}
+
+@media only screen and (min-width: 768px) {
+  .form-action-btns input[type="submit"] {
+    width: 20%;
+    font-size: 12px;
+  }
+}
+
+@media only screen and (min-width: 321px) and (max-width: 479px) {
+  .form-action-btns input[type="submit"] {
+    width: 55%;
+    font-size: 12px;
+  }
+}
+@media only screen and (max-width: 320px) {
+  .form-action-btns input[type="submit"] {
+    width: 55%;
+    font-size: 12px;
+  }
+}

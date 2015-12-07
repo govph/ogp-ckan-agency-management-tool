@@ -1,0 +1,110 @@
+{% extends 'frontend/index.html' %}
+{% block title %}Create Dataset | Manager Tool{% endblock %}
+{% block content %}
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 fuelux">
+        <form method="POST" id="new-dataset-form">
+            <div class="fuelux">
+                <div class="wizard">
+                    <ul class="steps">
+                        <li data-target="#step1">
+                            <span class="badge badge-info">1</span>Dataset Info<span class="chevron"></span>
+                        </li>
+                        <li data-target="#step2" class="active">
+                            <span class="badge">2</span>Additional Info<span class="chevron"></span>
+                        </li>
+                        <li data-target="#step3">
+                            <span class="badge">3</span>Add Resource<span class="chevron"></span>
+                        </li>
+                    </ul>
+                    <div class="actions">
+                        <a href="/dataset/new/{{ dataset.id }}/step1" class="btn btn-sm btn-primary btn-prev">
+                            <i class="fa fa-arrow-left"></i>Prev
+                        </a>
+                        <button type="submit" class="btn btn-sm btn-success btn-next" data-last="Finish"> Next<i class="fa fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="step-content">
+                    <div class="step-pane active form-horizontal" id="step2">
+                        <div class="form-group">
+                            <label for="inputEmail3" class="col-sm-2 control-label">Source</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control step2" name="indexed_source" id="dataset-source" placeholder="http://example.com/dataset.json" value="{{ dataset.source }}">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputEmail3" class="col-sm-2 control-label">Author</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control step2" name="indexed_author_name" id="dataset-author-name" placeholder="John Bloggs" value="{% if dataset.author_email %}{{ dataset.author_name }}{% else %}{% if user.role == 'AGENCYADMIN' %}{{ user.department }}{% endif %}{% endif %}" {% if user.role == 'AGENCYADMIN' %}readonly{% endif %}>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputEmail3" class="col-sm-2 control-label">Author Email</label>
+                            <div class="col-sm-9">
+                                <input type="email" class="form-control step2" name="indexed_author_email" id="dataset-author-email" placeholder="author@example.com" value="{{ dataset.author_email }}">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputEmail3" class="col-sm-2 control-label">Maintainer</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control step2" name="indexed_maintainer_name" id="dataset-maintainer-name" placeholder="Office/Unit" value="{{ dataset.maintainer_name }}">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputEmail3" class="col-sm-2 control-label">Maintainer Email</label>
+                            <div class="col-sm-9">
+                                <input type="email" class="form-control step2" name="indexed_maintainer_email" id="dataset-maintainer-email" placeholder="maintainer@example.com" value="{{ dataset.maintainer_email }}">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputEmail3" class="col-sm-2 control-label">Granularity</label>
+                            <div class="col-sm-9">
+                                <select class="form-control step2" name="indexed_granularity" id="dataset-granularity">
+                                    <option value="">Select Granularity</option>
+                                    <option value="National" {% if dataset.granularity == "National" %}selected{% endif %}>National</option>
+                                    <option value="Regional" {% if dataset.granularity == "Regional" %}selected{% endif %}>Regional</option>
+                                    <option value="Province" {% if dataset.granularity == "Province" %}selected{% endif %}>Province</option>
+                                    <option value="City or Municipality" {% if dataset.granularity == "City or Municipality" %}selected{% endif %}>City or Municipality</option>
+                                    <option value="Baranggay" {% if dataset.granularity == "Baranggay" %}selected{% endif %}>Baranggay</option>
+                                    <option value="Others" {% if dataset.granularity == "Others" %}selected{% endif %}>Others</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputEmail3" class="col-sm-2 control-label">Temporal Date</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control step2" name="indexed_temporal_date" id="dataset-temporal-date" placeholder="mm/dd/yy - mm/dd/yy" value="{{ dataset.temporal_date }}">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputEmail3" class="col-sm-2 control-label">Frequency of Update</label>
+                            <div class="col-sm-9">
+                                <select class="form-control step2" name="indexed_frequency_update" id="dataset-frequency-update">
+                                    <option value="">Select Frequency of Update</option>
+                                    <option value="Annually" {% if dataset.frequency_update == "Annually" %}selected{% endif %}>Annually</option>
+                                    <option value="Biannually" {% if dataset.frequency_update == "Biannually" %}selected{% endif %}>Biannually</option>
+                                    <option value="Quarterly" {% if dataset.frequency_update == "Quarterly" %}selected{% endif %}>Quarterly</option>
+                                    <option value="Monthly" {% if dataset.frequency_update == "Monthly" %}selected{% endif %}>Monthly</option>
+                                    <option value="Daily" {% if dataset.frequency_update == "Daily" %}selected{% endif %}>Daily</option>
+                                    <option value="Others" {% if dataset.frequency_update == "Others" %}selected{% endif %}>Others</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+{% endblock %}
+{% block script %}
+    <script>
+        $(document).ready(function (){
+            $("#dataset-source").focus();
+        });
+        $("#new-dataset-form").submit(function (){
+            $(this).find(".form-control").prop("readonly", true);
+            $(this).find("button:submit").prepend($("<i>", { class: "fa fa-fw fa-spin fa-circle-o-notch" }));
+            $(this).find(".actions").children(".btn").prop("disabled", true);
+        });
+    </script>
+{% endblock %}

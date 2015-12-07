@@ -1,0 +1,212 @@
+{% extends 'frontend/index.html' %}
+{% block title %}Register | Manager Tool {% endblock %}
+{% block content %}
+    <div class="col-xs-10 col-xs-offset-1 col-sm-8 col-sm-offset-2 col-md-8 col-md-offset-2 col-lg-8 col-lg-offset-2 register-form">
+        <form method="POST" id="registerAccountForm">
+            <h2>REGISTER</h2>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="form-group col-lg-3 no-padding-left">
+                        <label class="control-label" for="salutation">SALUTATION TITLE <span class="text-danger">*</span></label>
+                        <select class="form-control input-lg" name="salutation" required>
+                            <option value="" selected disabled>Salutation</option>
+                            <option value="Mr.">Mr.</option>
+                            <option value="Ms.">Ms.</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-lg-3 no-padding-left">
+                        <label class="control-label" for="first_name">FIRST NAME <span class="text-danger">*</span></label>
+                        <input type="text" name="first_name" id="first_name" class="form-control input-lg" required>
+                    </div>
+                    <div class="form-group col-lg-3 no-padding-left">
+                        <label class="control-label" for="middle_name">MIDDLE NAME</label>
+                        <input type="text" name="middle_name" id="middle_name" class="form-control input-lg">
+                    </div>
+                    <div class="form-group col-lg-3 no-padding">
+                        <label class="control-label" for="last_name">LAST NAME <span class="text-danger">*</span></label>
+                        <input type="text" name="last_name" id="last_name" class="form-control input-lg" required>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="form-group col-lg-6 no-padding-left">
+                        <label class="control-label" for="mobile_number">MOBILE</label>
+                        <input type="text" name="mobile_number" id="mobile_number" class="form-control input-lg" data-mask="+63 (999) 999-9999" data-mask-placeholder="+63 (XXX) XXX-XXXX" placeholder="+63 (XXX) XXX-XXXX">
+                    </div>
+                    <div class="form-group col-lg-6 no-padding">
+                        <label class="control-label" for="email">EMAIL <span class="text-danger">*</span></label>
+                        <input type="email" name="email" id="email" class="form-control input-lg" required>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="form-group col-lg-12 no-padding">
+                        <label class="control-label" for="department">DEPARTMENT <span class="text-danger">*</span></label>
+                        <select name="department" id="department" class="form-control input-lg" disabled required>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="form-group col-lg-12 no-padding">
+                        <label class="control-label" for="agency">AGENCY <span class="text-danger">*</span></label>
+                        <select name="agency" id="agency" class="form-control input-lg" disabled required>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="form-group col-lg-12 no-padding">
+                        <label class="control-label" for="region">REGION <span class="text-danger">*</span></label>
+                        <select name="region" id="region" class="form-control input-lg" disabled required>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="form-group col-lg-12 no-padding">
+                        <label class="control-label" for="operating-unit">OPERATING UNIT <span class="text-danger">*</span></label>
+                        <select name="operating_unit" id="operating-unit" class="form-control input-lg" disabled required>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="form-group col-lg-12 no-padding">
+                        <label class="control-label" for="designation">DESIGNATION <span class="text-danger">*</span></label>
+                        <input type="text" name="designation" id="designation" class="form-control input-lg typeahead" required>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="form-group col-lg-6 no-padding-left">
+                        <label class="control-label" for="password">PASSWORD <span class="text-danger">*</span></label>
+                        <input type="password" name="password" id="password" class="form-control input-lg" required>
+                    </div>
+                    <div class="form-group col-lg-6 no-padding">
+                        <label class="control-label" for="confirm_password">CONFIRM PASSWORD <span class="text-danger">*</span></label>
+                        <input type="password" name="confirm_password" id="confirm_password" class="form-control input-lg" required>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="form-group col-lg-12 no-padding">
+                        <button type="submit" class="btn btn-lg btn-inverse" disabled>REGISTER</button>
+                        <input type="hidden" name="token" value="{{ csrf_token }}">
+                    </div>
+                </div>
+            </div>
+            <a href="/register/verify/send">Resend Verification Email</a> / <a href="/login">Login</a>
+        </form>
+    </div>
+{% endblock %}
+{% block script %}
+    <script src="/js/masked-input.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $("input[name=first_name], input[name=middle_name], input[name=last_name]").bind('keyup blur',function(){
+                var node = $(this);
+                node.val(node.val().replace(/[^a-zA-Z ]/g,'') ); }
+            );
+            loadUacsDepartment();
+            $('[data-mask]').each(function() {
+                var $this = $(this);
+                var mask = $this.attr('data-mask') || 'error...', mask_placeholder = $this.attr('data-mask-placeholder') || 'X';
+                $this.mask(mask, {
+                    placeholder : mask_placeholder
+                });
+            });
+            $('input[name=first_name]').focus();
+        });
+        $("#registerAccountForm").submit(function (){
+            $(".form-control").prop("readonly", true);
+            $("button.btn-inverse").prop("disabled", true).html($("<i>", { class: "fa fa-spin fa-circle-o-notch" })).append(" REGISTER");
+        });
+        $("#department").change(function (){
+            var this_obj = $(this);
+            this_obj.prop("disabled", true);
+            this_obj.after($("<span>", { class: "fa fa-fw fa-lg fa-spin fa-circle-o-notch form-control-feedback", "aria-hidden": true, style: "top: 20px;" }));
+            $("#registerAccountForm").find("button:submit").prop("disabled", true);
+            $("#agency, #region, #operating-unit").empty().prop("disabled", true);
+            $.getJSON("/api/v1/uacs?department=" + this.value).done(function(d) {
+                $("#agency").html($("<option>", { value: "", disabled: "", selected: "", text: "Select an Agency"}));
+                for(i=0;i<d.data.length;i++){
+                    $("#agency").append($("<option>", { value: d.data[i], text: d.data[i] }));
+                }
+                this_obj.prop("disabled", false);
+                $("#agency").prop("disabled", false);
+                this_obj.next("span.fa").remove();
+            }).fail(function( jqxhr, textStatus, error ) {
+                $("#department").empty().append($("<option>", { value: "", selected: "", text: "Cannot load agencies, try again", disabled: "" }));
+                this_obj.prop("disabled", false);
+                this_obj.next("span.fa").remove();
+                $("#agency").prop("disabled", false);
+            });
+        });
+        $("#agency").change(function (){
+            var this_obj = $(this);
+            this_obj.prop("disabled", true);
+            this_obj.after($("<span>", { class: "fa fa-fw fa-lg fa-spin fa-circle-o-notch form-control-feedback", "aria-hidden": true, style: "top: 20px;" }));
+            $("#registerAccountForm").find("button:submit").prop("disabled", true);
+            $("#region, #operating-unit").empty().prop("disabled", true);
+            $.getJSON("/api/v1/uacs?department=" + $("#department").val() + "&agency=" + this_obj.val()).done(function(d) {
+                $("#region").html($("<option>", { value: "", disabled: "", selected: "", text: "SELECT A REGION"}));
+                for(i=0;i<d.data.length;i++){
+                    $("#region").append($("<option>", { value: d.data[i], text: d.data[i] }));
+                }
+                this_obj.prop("disabled", false);
+                $("#region").prop("disabled", false);
+                this_obj.next("span.fa").remove();
+            }).fail(function( jqxhr, textStatus, error ) {
+                $("#region").empty().append($("<option>", { value: "", selected: "", text: "Cannot load regions, try again", disabled: "" }));
+                this_obj.prop("disabled", false);
+                this_obj.next("span.fa").remove();
+                $("#region").prop("disabled", false);
+            });
+        });
+        $("#region").change(function (){
+            var this_obj = $(this);
+            this_obj.prop("disabled", true);
+            this_obj.after($("<span>", { class: "fa fa-fw fa-lg fa-spin fa-circle-o-notch form-control-feedback", "aria-hidden": true, style: "top: 20px;" }));
+            $("#registerAccountForm").find("button:submit").prop("disabled", true);
+            $("#operating-unit").empty().prop("disabled", true);
+            $.getJSON("/api/v1/uacs?department=" + $("#department").val() + "&agency=" + $("#agency").val() + "&region=" + this_obj.val()).done(function(d) {
+                $("#operating-unit").html($("<option>", { value: "", disabled: "", selected: "", text: "SELECT AN OPERATING UNIT"}));
+                for(key in d.data){
+                    $("#operating-unit").append($("<option>", { value: key + "->" + d.data[key], text: key }));
+                }
+                this_obj.prop("disabled", false);
+                $("#operating-unit").prop("disabled", false);
+                this_obj.next("span.fa").remove();
+            }).fail(function( jqxhr, textStatus, error ) {
+                $("#operating-unit").empty().append($("<option>", { value: "", selected: "", text: "Cannot load regions, try again", disabled: "" }));
+                this_obj.prop("disabled", false);
+                this_obj.next("span.fa").remove();
+                $("#operating-unit").prop("disabled", false);
+            });
+        });
+        $("#operating-unit").change(function (){
+            $("#registerAccountForm").find("button:submit").prop("disabled", false);
+            $("#designation").focus();
+        });
+        function loadUacsDepartment(){
+            $.getJSON("/api/v1/uacs").done(function(d) {
+                $("#department").html($("<option>", { value: "", disabled: "", selected: "", text: "SELECT A DEPARTMENT"}));
+                for(i=0;i<d.data.length;i++){
+                    $("#department").append($("<option>", { value: d.data[i], text: d.data[i] }));
+                }
+                $("#department").prop("disabled", false);
+            }).fail(function( jqxhr, textStatus, error ) {
+                $("#department").empty().append($("<option>", { value: "", selected: "", text: "Cannot load departments, try again", disabled: "" }));
+            });
+        }
+    </script>
+{% endblock %}

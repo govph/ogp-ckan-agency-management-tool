@@ -1,0 +1,28 @@
+{% extends 'frontend/index.html' %}
+{% block title %}Dashboard | Manager Tool{% endblock %}
+{% block content %}
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <form method="POST" id="registerAccountForm" action="/dashboard">
+            <div class="col-lg-6 col-lg-offset-3">
+                <h3>SEND INVITATION TO Manager Tool ADMINS</h3>
+                <div class="input-group">
+                  <input type="email" name="email" class="form-control input-lg" placeholder="Email" required>
+                  <span class="input-group-btn">
+                    <button class="btn btn-lg btn-inverse" type="submit">SEND</button>
+                  </span>
+                </div>
+            </div>
+        </form>
+    </div>
+{% endblock %}
+{% block script %}
+    <script>
+        $(document).ready(function(){
+            $('input[name=email]').focus();
+            $("#registerAccountForm").submit(function (){
+                $(".form-control").prop("readonly", true);
+                $("button.btn-inverse").prop("disabled", true).html($("<i>", { class: "fa fa-spin fa-circle-o-notch" })).append(" SEND");
+            });
+        });
+    </script>
+{% endblock %}

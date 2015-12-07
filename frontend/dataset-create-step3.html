@@ -1,0 +1,155 @@
+{% extends 'frontend/index.html' %}
+{% block title %}Create Dataset | Manager Tool{% endblock %}
+{% block content %}
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 fuelux">
+        <form method="POST" id="new-dataset-form" enctype="multipart/form-data">
+            <div class="fuelux">
+                <div class="wizard">
+                    <ul class="steps">
+                        <li data-target="#step1">
+                            <span class="badge badge-info">1</span>Dataset Info<span class="chevron"></span>
+                        </li>
+                        <li data-target="#step2">
+                            <span class="badge">2</span>Additional Info<span class="chevron"></span>
+                        </li>
+                        <li data-target="#step3" class="active">
+                            <span class="badge">3</span>Add Resource<span class="chevron"></span>
+                        </li>
+                    </ul>
+                    <div class="actions">
+                        <a href="/dataset/new/{{ dataset.id }}/step2" class="btn btn-sm btn-primary btn-prev">
+                            <i class="fa fa-arrow-left"></i>Prev
+                        </a>
+                        <button type="submit" class="btn btn-sm btn-success btn-next" data-last="Finish"> Finish<i class="fa fa-check"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="step-content">
+                    <div class="step-pane active form-horizontal" id="step3">
+                        <div class="form-group">
+                            <label for="inputEmail3" class="col-sm-2 control-label"><span class="text-danger">*</span> File</label>
+                            <div class="col-sm-9" id="fileUploadContainer">
+                                <button type="button" class="btn btn-sm btn-warning btn-file-action" id="dataset-file-upload-btn" onclick="showFileUpload()">FILE</button>
+                                <button type="button" class="btn btn-sm btn-warning btn-file-action" id="dataset-file-link-btn" onclick="showLink()">LINK</button>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputEmail3" class="col-sm-2 control-label"><span class="text-danger">*</span> Name</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control step3" name="indexed_file_name" id="dataset-data-name" placeholder="eg. January 2015 Gold Prices" required>
+                                <input type="hidden" name="indexed_type" value="RESOURCE">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputEmail3" class="col-sm-2 control-label"><span class="text-danger">*</span> Description</label>
+                            <div class="col-sm-9">
+                                <textarea class="form-control step3" name="unindexed_file_description" id="dataset-data-description" placeholder="Some useful notes about the data" rows="4" required></textarea>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputEmail3" class="col-sm-2 control-label">Format</label>
+                            <div class="col-sm-9">
+                                <select class="form-control step3" name="indexed_file_format" id="file-format">
+                                <option value="">Select a File Format</option>
+                                <option value="CSV">CSV</option>
+                                <option value="JSON">JSON</option>
+                                <option value="JPG">JPG</option>
+                                <option value="PDF">PDF</option>
+                                <option value="PNG">PNG</option>
+                                <option value="TSV">TSV</option>
+                                <option value="XML">XML</option>
+                                <option value="XLS">XLS</option>
+                                <option value="XLSX">XLSX</option>
+                                <option value="ZIP">ZIP</option>
+                                <option value="OTHER">OTHER</option>
+                            </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+{% endblock %}
+{% block script %}
+    <script>
+        $(document).ready(function (){
+            $('.btn-file :file').on('fileselect', function (event, numFiles, label) {
+                var input = $(this).parents('.input-group').find(':text'), log = numFiles > 1 ? numFiles + ' files selected' : label;
+                if (input.length) {
+                    input.val(log);
+                } else {
+                    if (log)
+                        alert(log);
+                }
+            });
+        });
+        $(document).on('change', '.btn-file :file', function () {
+            var input = $(this), numFiles = input.get(0).files ? input.get(0).files.length : 1, label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
+            input.trigger('fileselect', [
+                numFiles,
+                label
+            ]);
+        });
+        $("#new-dataset-form").submit(function (){
+            $(this).find(".form-control").prop("readonly", true);
+            $(this).find("button:submit").prepend($("<i>", { class: "fa fa-fw fa-spin fa-circle-o-notch" })).prop("disabled", true);
+        });
+        function showLink(){
+            $(".btn-file-action").hide();
+            $("#fileUploadContainer").find("div.file-link").remove();
+            $("#fileUploadContainer").append(
+                $("<div>", { class: "file-link"}).html(
+                $("<input>", { type: "text", class: "form-control", name: "unindexed_dataset_data", placeholder: "eg. http://www.file.com", style: "width: 85%; float: left;" }).add(
+                $("<button>", { type: "button", class: "btn btn-danger", style: "margin-left: 5px;", tabindex: "-1", onclick: "hideFileLink(this);" }).html($("<i>", { class: "fa fa-fw fa-times" })))));
+            $("#fileUploadContainer").find("input[name=unindexed_dataset_data]").focus();
+        }
+
+        function hideFileLink(obj){
+            $(".btn-file-action").show();
+            $(obj).remove();
+            $("#fileUploadContainer").find("div.file-link").remove();
+        }
+
+        function showFileUpload(){
+            $(".btn-file-action").hide();
+            $("#fileUploadContainer").find("div.file-upload").remove();
+            $("#fileUploadContainer").append(
+                $("<div>", { class: "input-group file-upload", style: "width: 85%; float: left;" }).html(
+                    $("<span>", { class: "input-group-btn" }).html(
+                        $("<span>", { class: "btn btn-warning btn-file", text: "Browse…" }).append(
+                            $("<input>", { type: "file", name: "file_dataset_data", id: "dataset-data" }))).add(
+                    $("<input>", { type: "text", class: "form-control", readonly: "" }))).add(
+                $("<button>", { type: "button", class: "btn btn-danger", style: "margin-left: 5px;", onclick: "hideFileUpload(this);" }).html($("<i>", { class: "fa fa-fw fa-times" }))));
+
+            $(document).on('change', '.btn-file :file', function () {
+                var input = $(this), numFiles = input.get(0).files ? input.get(0).files.length : 1, label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
+                input.trigger('fileselect', [
+                    numFiles,
+                    label
+                ]);
+            });
+
+            $('.btn-file :file').on('fileselect', function (event, numFiles, label) {
+                if(this.files[0].size > 32000000){
+                    alert("File is too big. File size limit is 30MB.");
+                }
+                else{
+                    var input = $(this).parents('.input-group').find(':text'), log = numFiles > 1 ? numFiles + ' files selected' : label;
+                    if (input.length) {
+                        input.val(log);
+                    } else {
+                        if (log)
+                            alert(log);
+                    }
+                }
+            });
+        }
+
+        function hideFileUpload(obj){
+            $(".btn-file-action").show();
+            $(obj).remove();
+            $("#fileUploadContainer").find("div.file-upload").remove();
+        }
+    </script>
+{% endblock %}

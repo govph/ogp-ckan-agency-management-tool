@@ -1,0 +1,484 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+        <!-- Facebook sharing information tags -->
+        <meta property="og:title" content="Manager Tool">
+
+        <title>Manager Tool</title>
+
+	<style type="text/css">
+		#outlook a{
+			padding:0;
+		}
+		body{
+			width:100% !important;
+		}
+		.ReadMsgBody{
+			width:100%;
+		}
+		.ExternalClass{
+			width:100%;
+		}
+		body{
+			-webkit-text-size-adjust:none;
+		}
+		body{
+			margin:0;
+			padding:0;
+		}
+		img{
+			border:0;
+			height:auto;
+			line-height:100%;
+			outline:none;
+			text-decoration:none;
+		}
+		table td{
+			border-collapse:collapse;
+		}
+		#backgroundTable{
+			height:100% !important;
+			margin:0;
+			padding:0;
+			width:100% !important;
+		}
+
+        .centered {
+            text-align: center;
+        }
+	/*
+	@tab Page
+	@section background color
+	@tip Set the background color for your email. You may want to choose one that matches your company's branding.
+	@theme page
+	*/
+		body,#backgroundTable{
+			/*@editable*/background-color:#f1f1f1;
+		}
+	/*
+	@tab Page
+	@section email border
+	@tip Set the border for your email.
+	*/
+		#templateContainer{
+			/*@editable*/border:1px solid #DDDDDD;
+		}
+	/*
+	@tab Page
+	@section heading 1
+	@tip Set the styling for all first-level headings in your emails. These should be the largest of your headings.
+	@style heading 1
+	*/
+		h1,.h1{
+			/*@editable*/color:#202020;
+			display:block;
+			/*@editable*/font-family:Arial;
+			/*@editable*/font-size:34px;
+			/*@editable*/font-weight:bold;
+			/*@editable*/line-height:100%;
+			margin-top:0;
+			margin-right:0;
+			margin-bottom:10px;
+			margin-left:0;
+			/*@editable*/text-align:left;
+		}
+	/*
+	@tab Page
+	@section heading 2
+	@tip Set the styling for all second-level headings in your emails.
+	@style heading 2
+	*/
+		h2,.h2{
+			/*@editable*/color:#202020;
+			display:block;
+			/*@editable*/font-family:Arial;
+			/*@editable*/font-size:30px;
+			/*@editable*/font-weight:bold;
+			/*@editable*/line-height:100%;
+			margin-top:0;
+			margin-right:0;
+			margin-bottom:10px;
+			margin-left:0;
+			/*@editable*/text-align:left;
+		}
+	/*
+	@tab Page
+	@section heading 3
+	@tip Set the styling for all third-level headings in your emails.
+	@style heading 3
+	*/
+		h3,.h3{
+			/*@editable*/color:#202020;
+			display:block;
+			/*@editable*/font-family:Arial;
+			/*@editable*/font-size:26px;
+			/*@editable*/font-weight:bold;
+			/*@editable*/line-height:100%;
+			margin-top:0;
+			margin-right:0;
+			margin-bottom:10px;
+			margin-left:0;
+			/*@editable*/text-align:left;
+		}
+	/*
+	@tab Page
+	@section heading 4
+	@tip Set the styling for all fourth-level headings in your emails. These should be the smallest of your headings.
+	@style heading 4
+	*/
+		h4,.h4{
+			/*@editable*/color:#202020;
+			display:block;
+			/*@editable*/font-family:Arial;
+			/*@editable*/font-size:22px;
+			/*@editable*/font-weight:bold;
+			/*@editable*/line-height:100%;
+			margin-top:0;
+			margin-right:0;
+			margin-bottom:10px;
+			margin-left:0;
+			/*@editable*/text-align:left;
+		}
+	/*
+	@tab Header
+	@section preheader style
+	@tip Set the background color for your email's preheader area.
+	@theme page
+	*/
+		#templatePreheader{
+			/*@editable*/background-color:#F1F1F1;
+		}
+	/*
+	@tab Header
+	@section preheader text
+	@tip Set the styling for your email's preheader text. Choose a size and color that is easy to read.
+	*/
+		.preheaderContent div{
+			/*@editable*/color:#505050;
+			/*@editable*/font-family:Arial;
+			/*@editable*/font-size:10px;
+			/*@editable*/line-height:100%;
+			/*@editable*/text-align:left;
+		}
+	/*
+	@tab Header
+	@section preheader link
+	@tip Set the styling for your email's preheader links. Choose a color that helps them stand out from your text.
+	*/
+		.preheaderContent div a:link,.preheaderContent div a:visited,.preheaderContent div a .yshortcuts {
+			/*@editable*/color:#336699;
+			/*@editable*/font-weight:normal;
+			/*@editable*/text-decoration:underline;
+		}
+	/*
+	@tab Header
+	@section header style
+	@tip Set the background color and border for your email's header area.
+	@theme header
+	*/
+		#templateHeader{
+			/*@editable*/background-color:#FFFFFF;
+			/*@editable*/border-bottom:0;
+		}
+	/*
+	@tab Header
+	@section header text
+	@tip Set the styling for your email's header text. Choose a size and color that is easy to read.
+	*/
+		.headerContent{
+			/*@editable*/color:#202020;
+			/*@editable*/font-family:Arial;
+			/*@editable*/font-size:34px;
+			/*@editable*/font-weight:bold;
+			/*@editable*/line-height:100%;
+			/*@editable*/padding:0;
+			/*@editable*/text-align:center;
+			/*@editable*/vertical-align:middle;
+		}
+	/*
+	@tab Header
+	@section header link
+	@tip Set the styling for your email's header links. Choose a color that helps them stand out from your text.
+	*/
+		.headerContent a:link,.headerContent a:visited,.headerContent a .yshortcuts {
+			/*@editable*/color:#336699;
+			/*@editable*/font-weight:normal;
+			/*@editable*/text-decoration:underline;
+		}
+		#headerImage{
+			height:auto;
+			max-width:130px;
+		}
+	/*
+	@tab Body
+	@section body style
+	@tip Set the background color for your email's body area.
+	*/
+		#templateContainer,.bodyContent{
+			/*@editable*/background-color:#FFFFFF;
+		}
+	/*
+	@tab Body
+	@section body text
+	@tip Set the styling for your email's main content text. Choose a size and color that is easy to read.
+	@theme main
+	*/
+		.bodyContent div{
+			/*@editable*/color:#505050;
+			/*@editable*/font-family:Arial;
+			/*@editable*/font-size:14px;
+			/*@editable*/line-height:150%;
+			/*@editable*/text-align:left;
+		}
+	/*
+	@tab Body
+	@section body link
+	@tip Set the styling for your email's main content links. Choose a color that helps them stand out from your text.
+	*/
+		.bodyContent div a:link,.bodyContent div a:visited,.bodyContent div a .yshortcuts {
+			/*@editable*/color:#336699;
+			/*@editable*/font-weight:normal;
+			/*@editable*/text-decoration:underline;
+		}
+		.bodyContent img{
+			display:inline;
+			height:auto;
+		}
+	/*
+	@tab Footer
+	@section footer style
+	@tip Set the background color and top border for your email's footer area.
+	@theme footer
+	*/
+		#templateFooter{
+			/*@editable*/background-color:#FFFFFF;
+			/*@editable*/border-top:0;
+		}
+	/*
+	@tab Footer
+	@section footer text
+	@tip Set the styling for your email's footer text. Choose a size and color that is easy to read.
+	@theme footer
+	*/
+		.footerContent div{
+			/*@editable*/color:#707070;
+			/*@editable*/font-family:Arial;
+			/*@editable*/font-size:12px;
+			/*@editable*/line-height:125%;
+			/*@editable*/text-align:left;
+		}
+	/*
+	@tab Footer
+	@section footer link
+	@tip Set the styling for your email's footer links. Choose a color that helps them stand out from your text.
+	*/
+		.footerContent div a:link,.footerContent div a:visited,.footerContent div a .yshortcuts {
+			/*@editable*/color:#336699;
+			/*@editable*/font-weight:normal;
+			/*@editable*/text-decoration:underline;
+		}
+		.footerContent img{
+			display:inline;
+		}
+	/*
+	@tab Footer
+	@section social bar style
+	@tip Set the background color and border for your email's footer social bar.
+	@theme footer
+	*/
+		#social{
+			/*@editable*/background-color:#FAFAFA;
+			/*@editable*/border:0;
+		}
+	/*
+	@tab Footer
+	@section social bar style
+	@tip Set the background color and border for your email's footer social bar.
+	*/
+		#social div{
+			/*@editable*/text-align:center;
+		}
+	/*
+	@tab Footer
+	@section utility bar style
+	@tip Set the background color and border for your email's footer utility bar.
+	@theme footer
+	*/
+		#utility{
+			/*@editable*/background-color:#FFFFFF;
+			/*@editable*/border:0;
+		}
+	/*
+	@tab Footer
+	@section utility bar style
+	@tip Set the background color and border for your email's footer utility bar.
+	*/
+		#utility div{
+			/*@editable*/text-align:center;
+		}
+		#monkeyRewards img{
+			max-width:190px;
+		}
+</style></head>
+    <body leftmargin="0" marginwidth="0" topmargin="0" marginheight="0" offset="0">
+    	<center>
+        	<table border="0" cellpadding="0" cellspacing="0" height="100%" width="100%" id="backgroundTable">
+            	<tr>
+                	<td align="center" valign="top">
+                        <!-- // Begin Template Preheader \\ -->
+                        <table border="0" cellpadding="10" cellspacing="0" width="600" id="templatePreheader">
+                            <tr>
+                                <td valign="top" class="preheaderContent">
+
+
+                                </td>
+                            </tr>
+                        </table>
+                        <!-- // End Template Preheader \\ -->
+                    	<table border="0" cellpadding="0" cellspacing="0" width="600" id="templateContainer">
+                        	<tr>
+                            	<td align="center" valign="top">
+                                    <!-- // Begin Template Header \\ -->
+                                	<table border="0" cellpadding="0" cellspacing="0" width="600" id="templateHeader">
+                                        <tr>
+                                            <td class="headerContent" style="background: #ffc425 url({{ current_url }}images/header-bg1.png) no-repeat center bottom; padding-top: 10px">
+
+                                            	<!-- // Begin Module: Standard Header Image \\ -->
+                                            	<img src="{{ current_url }}images/logo.png" style="max-width:130px;" id="headerImage campaign-icon" mc:label="header_image" mc:edit="header_image" mc:allowdesigner mc:allowtext>
+                                            	<!-- // End Module: Standard Header Image \\ -->
+
+                                            </td>
+                                        </tr>
+                                    </table>
+                                    <!-- // End Template Header \\ -->
+                                </td>
+                            </tr>
+                        	<tr>
+                            	<td align="center" valign="top">
+                                    <!-- // Begin Template Body \\ -->
+                                	<table border="0" cellpadding="0" cellspacing="0" width="600" id="templateBody">
+                                    	<tr>
+                                            <td valign="top" class="bodyContent">
+
+                                                <!-- // Begin Module: Standard Postcard Content \\ -->
+                                                <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                                                    <tr mc:repeatable>
+                                                        <td valign="top">
+                                                            <table border="0" cellpadding="20" cellspacing="0" width="100%">
+                                                                <tr>
+                                                                    <td valign="top">
+                                                                        {% if test %}<div mc:edit="postcard_heading00" style="border-color: #953b39; color: #FFF !important;  background: #c26565;  text-shadow: none; margin-bottom: 20px;  margin-top: 0;  color: #675100;  border-width: 0;  border-left-width: 5px;  padding: 10px;  border-radius: 0; text-align: center;">THIS IS A TEST EMAIL</div>{% endif %}
+
+                                                                        <div mc:edit="std_content00"><h1 class="h1" style="color: #202020;display: block;font-family: Arial;font-size: 34px;font-weight: bold;line-height: 100%;margin-top: 0;margin-right: 0;margin-bottom: 10px;margin-left: 80px;text-align: left;"><span style="font-size:18px;">Hello {{receiver_name}},</span></h1>
+
+
+{% if type %}
+
+    {% if type == "password_reset" %}
+    	<div style="text-align: center">We received a request to reset the password of your Manager Tool Network account.<br>
+        If you made this request, click the button below.</div><br>
+
+        <div style="text-align: center;color: #505050;font-family: Arial;font-size: 14px;line-height: 150%;"><span style="font-family:arial,helvetica neue,helvetica,sans-serif;"><a href="{{ current_url }}password/reset?token={{ email_content['token'] }}&uid={{ email_content['uid'] }}" style="color: #336699;font-weight: normal;text-decoration: none;" target="_blank"><b style="color: rgb(33, 25, 34); font-family: 'helvetica neue', helvetica, arial, sans-serif; font-size: xx-large; line-height: 24px; text-align: center;"><font color="#1155cc"><span style="font-weight: normal;"><u style="-webkit-border-radius: 3px; -moz-border-radius: 3px; font-size: 17px; text-transform: uppercase; padding: 12px 40px; color: #fff; background: #272727; text-decoration: none!important;">VERIFY ACCOUNT</u></span></font></b></a></span></div><br/><br/>
+
+        <i>If you did not request for a password reset, please ignore this message.</i>
+        <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+    {% elif type == "after_verify" %}
+    	<div style="text-align: center">Your account has been verified, however your account is still pending approval. <br>The Manager Tool Team will review your account, you will receive an email once your account is approved or disapproved.</div><br><br/>
+        <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+    {% elif type == "verify" %}
+    	<div style="text-align: center">Thank you for registering on Manager Tool. <br>Please click the button below to verify your account.</div><br>
+        <div style="text-align: center;color: #505050;font-family: Arial;font-size: 14px;line-height: 150%;"><span style="font-family:arial,helvetica neue,helvetica,sans-serif;"><a href="{{ current_url }}register/verify?token={{ email_content['token'] }}&uid={{ email_content['uid'] }}" style="color: #336699;font-weight: normal;text-decoration: none;" target="_blank"><b style="color: rgb(33, 25, 34); font-family: 'helvetica neue', helvetica, arial, sans-serif; font-size: xx-large; line-height: 24px; text-align: center;"><font color="#1155cc"><span style="font-weight: normal;"><u style="-webkit-border-radius: 3px; -moz-border-radius: 3px; font-size: 17px; text-transform: uppercase; padding: 12px 40px; color: #fff; background: #272727; text-decoration: none!important;">VERIFY ACCOUNT</u></span></font></b></a></span></div><br/>
+        <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+    {% elif type == "invite_opendata_admin" %}
+		<div style="text-align: center">You have been invited to join Manager Tool as an Manager Tool Admin. <br>Please click the button below to register.</div><br>
+        <div style="text-align: center;color: #505050;font-family: Arial;font-size: 14px;line-height: 150%;"><span style="font-family:arial,helvetica neue,helvetica,sans-serif;"><a href="{{ current_url }}register/verify?token={{ email_content['token'] }}&uid={{ email_content['uid'] }}" style="color: #336699;font-weight: normal;text-decoration: none;" target="_blank"><b style="color: rgb(33, 25, 34); font-family: 'helvetica neue', helvetica, arial, sans-serif; font-size: xx-large; line-height: 24px; text-align: center;"><font color="#1155cc"><span style="font-weight: normal;"><u style="-webkit-border-radius: 3px; -moz-border-radius: 3px; font-size: 17px; text-transform: uppercase; padding: 12px 40px; color: #fff; background: #272727; text-decoration: none!important;">REGISTER</u></span></font></b></a></span></div><br/>
+        <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+    {% elif type == "new_dataset" %}
+    	<div style="text-align: center">{{ email_content["department"] }} submitted {{ email_content["dataset_title"] }} dataset.</div><br>
+        <div style="text-align: center;color: #505050;font-family: Arial;font-size: 14px;line-height: 150%;"><span style="font-family:arial,helvetica neue,helvetica,sans-serif;"><a href="{{ current_url }}dataset/{{ email_content['dataset_id'] }}" style="color: #336699;font-weight: normal;text-decoration: none;" target="_blank"><b style="color: rgb(33, 25, 34); font-family: 'helvetica neue', helvetica, arial, sans-serif; font-size: xx-large; line-height: 24px; text-align: center;"><font color="#1155cc"><span style="font-weight: normal;"><u style="-webkit-border-radius: 3px; -moz-border-radius: 3px; font-size: 17px; text-transform: uppercase; padding: 12px 40px; color: #fff; background: #272727; text-decoration: none!important;">VIEW DATASET</u></span></font></b></a></span></div><br/>
+        <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+    {% elif type == "approve_account" %}
+    	<div style="text-align: center">Your account has been approved. You can now login.</div><br>
+        <div style="text-align: center;color: #505050;font-family: Arial;font-size: 14px;line-height: 150%;"><span style="font-family:arial,helvetica neue,helvetica,sans-serif;"><a href="{{ current_url }}login" style="color: #336699;font-weight: normal;text-decoration: none;" target="_blank"><b style="color: rgb(33, 25, 34); font-family: 'helvetica neue', helvetica, arial, sans-serif; font-size: xx-large; line-height: 24px; text-align: center;"><font color="#1155cc"><span style="font-weight: normal;"><u style="-webkit-border-radius: 3px; -moz-border-radius: 3px; font-size: 17px; text-transform: uppercase; padding: 12px 40px; color: #fff; background: #272727; text-decoration: none!important;">LOGIN</u></span></font></b></a></span></div><br/>
+        <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+    {% elif type == "odtf_update" %}
+    	{% if email_content["action"] %}
+		<div style="text-align: center">Here are the updates for today.</div><br>
+			<table style="width: 100%;max-width: 100%;background-color: transparent;border-spacing: 0;border-collapse: collapse;display: table;border-color: gray;">
+  				<tbody style="display: table-row-group;vertical-align: middle;border-color: inherit;">
+	    			{% for action in email_content["action"] %}
+	    			<tr>
+	    				<td style="padding: 8px;line-height: 1.42857143;vertical-align: top;border-top: 1px solid #ddd;">
+	    					<a href="{{ action.url }}" target="_blank" style="color:##222;font-weight: normal;text-decoration: none;">
+	    						<img src="{{ current_url }}images/{{action.icon}}.png" style="vertical-align: middle;"> {{ action.action }}
+	    					</a>
+    					<td>
+	    			</tr>
+	    			{% endfor %}
+	    		</tbody>
+	    	</table>
+	    {% else %}
+    	<div style="text-align: center">There are no updates today.</div>
+	    {% endif %}
+	    	<!--
+        <div style="text-align: center;color: #505050;font-family: Arial;font-size: 14px;line-height: 150%;"><span style="font-family:arial,helvetica neue,helvetica,sans-serif;"><a href="{{ current_url }}login" style="color: #336699;font-weight: normal;text-decoration: none;" target="_blank"><b style="color: rgb(33, 25, 34); font-family: 'helvetica neue', helvetica, arial, sans-serif; font-size: xx-large; line-height: 24px; text-align: center;"><font color="#1155cc"><span style="font-weight: normal;"><u style="-webkit-border-radius: 3px; -moz-border-radius: 3px; font-size: 17px; text-transform: uppercase; padding: 12px 40px; color: #fff; background: #272727; text-decoration: none!important;">LOGIN</u></span></font></b></a></span></div><br/> -->
+        <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+    {% endif %}
+
+{% endif %}
+
+<div>&nbsp;</div>
+&nbsp;
+</div>
+                                                                    </td>
+                                                                </tr>
+                                                            </table>
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                                <!-- // End Module: Standard Postcard Content \\ -->
+
+                                            </td>
+                                        </tr>
+                                    </table>
+                                    <!-- // End Template Body \\ -->
+                                </td>
+                            </tr>
+                        	<tr>
+                            	<td align="center" valign="top">
+                                    <!-- // Begin Template Footer \\ -->
+                                	<table border="0" cellpadding="10" cellspacing="0" width="600" id="templateFooter">
+                                    	<tr>
+                                        	<td valign="top" class="footerContent">
+
+                                        	<p>&nbsp;</p>
+
+                                                <!-- // Begin Module: Standard Footer \\ -->
+                                                <table border="0" cellpadding="10" cellspacing="0" width="100%">
+
+                                                    <tr>
+                                                        <td colspan="2" valign="middle" id="utility" style="text-align: center;">
+                                                            <div mc:edit="std_utility">
+                                                                &nbsp;<a href="{{ current_url }}" target="_blank">Manager Tool</a>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                                <!-- // End Module: Standard Footer \\ -->
+
+                                            </td>
+                                        </tr>
+                                    </table>
+                                    <!-- // End Template Footer \\ -->
+                                </td>
+                            </tr>
+                        </table>
+                        <br>
+                    </td>
+                </tr>
+            </table>
+        </center>
+    </body>
+</html>

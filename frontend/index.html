@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>{% block title %}Manager Tool{% endblock %}</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="description" content="Manager Tool Network">
+        <meta property="og:image" content=""/>
+        <meta property="og:title" content="Manager Tool Network"/>
+        <meta property="og:type" content="website"/>
+        <meta property="og:description" content="Manager Tool Network"/>
+        <meta property="og:url" content="{{ current_base_url }}"/>
+        <meta property="og:site_name" content="Manager Tool Network"/>
+        <meta name="author" content="">
+
+        <link rel="stylesheet" href="/css/bootstrap.min.css"/>
+        {% if local %}
+        <link rel="stylesheet" href="/css/font-awesome.min.css"/>
+        {% else %}
+        <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css">
+        {% endif %}
+        <!-- <link rel="stylesheet" href="/style/google-font.css" type="text/css" media="screen" > -->
+        <!-- <link rel="stylesheet" href="/css/plugin/pnotify.custom.min.css"/> -->
+        <link rel="stylesheet" href="/css/custom.css"/>
+        {% block style %}{% endblock %}
+        <link rel="shortcut icon" href="/images/favicon.ico">
+        <link rel="apple-touch-icon-precomposed" href="/images/apple-touch-icon-114-precomposed.png" sizes="114x114"/>
+        <link rel="apple-touch-icon-precomposed" href="/images/apple-touch-icon-72-precomposed.png" sizes="72x72"/>
+        <link rel="apple-touch-icon-precomposed" href="/images/apple-touch-icon-57-precomposed.png"/>
+    </head>
+    <body>
+        <nav class="navbar navbar-custom navbar-static-top">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" {% if user.role != 'AGENCYADMIN' %}href="/"{% endif %}>
+                        <img src="/images/home.png" />
+                    </a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-navbar">
+                    {% if user %}
+                    <ul class="nav navbar-nav navbar-right">
+                        <li class="dropdown">
+                            <a data-toggle="dropdown" class="dropdown-toggle" role="button">{{ user.name }} <span class="caret"></span></a>
+                            <ul role="menu" class="dropdown-menu">
+                                <li>
+                                    <a href="/logout"><i class="fa fa-sign-out"></i> Logout</a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                    {% endif %}
+                    <ul class="nav navbar-nav">
+                        <li class="divider"></li>
+                        <!-- <li{% if section_FAQ %} class="active"{% endif %}><a>About</a></li>
+                        <li class="divider"></li>
+                        <li{% if section_PRICING %} class="active"{% endif %}><a>News</a></li>
+                        <li class="divider"></li>
+                        <li{% if section_API %} class="active"{% endif %}><a>Data</a></li>
+                        <li class="divider"></li>
+                        <li{% if section_CONTACT %} class="active"{% endif %}><a>Infographics</a></li>
+                        <li class="divider"></li>
+                        <li{% if section_REGISTER %} class="active"{% endif %}><a id="register">Apps</a></li>
+                        <li class="divider"></li> -->
+                        {% if user.role in ["AGENCYADMIN", "MODERATOR"] %}
+                        <li><a href="/dashboard">Dashboard</a></li>
+                        <li class="divider"></li>
+                        <!-- <li><a href="/feedback">Feedback</a></li> -->
+                        {% elif user.role == "OPENDATAADMIN" %}
+                        <li><a href="/dashboard" >Dashboard</a></li>
+                        <li class="divider"></li>
+                        <li><a href="/agency/admins">Admin Registrations</a></li>
+                        <li class="divider"></li>
+                        <li><a href="/opendata/admins">Add Manager Tool Admin</a></li>
+                        {% elif user.role == "SUPERADMIN" %}
+                        <li><a href="/dashboard">Dashboard</a></li>
+                        {% endif %}
+                        <!-- <li{% if section_REGISTER %} class="active"{% endif %}><a id="register">Contact</a></li> -->
+                        {% if not user %}
+                        {% if not postsuccess %}
+                        <li class="divider"></li>
+                        <li{% if section_REGISTER %} class="active"{% endif %}><a href="/register" id="register">Register</a></li>
+                        <li class="divider"></li>
+                        <li{% if section_LOGIN %} class="active"{% endif %}><a href="/login"> Login</a></li>
+                        {% endif %}
+                        {% endif %}
+                    </ul>
+                </div><!-- /.navbar-collapse -->
+            </div>
+        </nav>
+        <div id="sub-header">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <a href="/" title="Home" rel="home" id="logo">
+                            <img class="adaptive-image" src="/images/logo.png" alt="Home">
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        {% block header %}{% endblock %}
+
+        <div class="container">
+            {% if error or success or info or (user.status == "VERIFIED" and user.role == "AGENCYADMIN") %}
+            <div class="row" id="alerts">
+                <div class="col-lg-12">
+                {% if error %}
+                    <div class="alert alert-danger fade in {% if not user.status == "PENDING" and show_alert %}no-margin{% endif %}">
+                        <i class="fa fa-warning"></i> {{ error|e }}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                {% elif success %}
+                    <div class="alert alert-success fade in {% if not user.status == "PENDING" and show_alert %}no-margin{% endif %}">
+                        <i class="fa fa-check"></i> {{ success|e }}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                {% elif info %}
+                    <div class="alert alert-info fade in {% if not user.status == "PENDING" and show_alert %}no-margin{% endif %}">
+                        <i class="fa fa-info"></i> {{ info|e }}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                {% endif %}
+                {% if user.status == "VERIFIED" and user.role == "AGENCYADMIN" %}
+                    <div class="alert alert-warning fade in">
+                        <i class="fa fa-fw fa-warning"></i> Your account is still pending approval. You won't be able to upload datasets.
+                    </div>
+                {% endif %}
+                </div>
+            </div>
+            {% endif %}
+            <div class="row" id="content">
+                {% if user %}
+                {% if show_breadcrumb %}
+                <ol class="breadcrumb col-lg-10">
+                  <li><a href="#"><i class="fa fa-fw fa-lg fa-home"></i></a></li>
+                  {% if breadcrumb %}
+                  {% for b in breadcrumb %}
+                  <li><a href="{{ b.link }}">{{ b.name }}</a></li>
+                  {% endfor %}
+                  {% endif %}
+                </ol>
+                {% endif %}
+                {% if show_add_dataset %}
+                <div class="col-lg-2">
+                <a href="/dataset/new" class="btn btn-warning pull-right">ADD DATASET</a>
+                </div>
+                {% endif %}
+                {% endif %}
+
+                {% block content %}{% endblock %}
+            </div>
+        </div>
+        <footer>
+            <div class="container clearfix">
+               <div class="img-holder left">
+                   <img src="/images/footlogo.png" alt="" class="pull-left">
+               </div>
+
+                <section class="pull-left first">
+                    <h5 class="title">Department Agency and Manager</h5>
+                    <p>Stet clita kasd gubergren, no sea takimata sanctus est Lorem.</p>
+                   <ul class="footer-links">
+                       <!-- <li><a href="#"></a></li> -->
+                   </ul>
+                </section>
+                <section class="pull-left">
+                    <h5 class="title">Agency Links</h5>
+                    <p>Lorem ipsum dolor sit amet.</p>
+
+                    <ul class="footer-links">
+                        <li><a href="#">Agency 1</a></li>
+                        <li><a href="#">Agency 2</a></li>
+                        <li><a href="#">Agency 3</a></li>
+                    </ul>
+                </section>
+                <section class="pull-left">
+                    <h5 class="title">Department Links</h5>
+                    <ul class="footer-links">
+                        <li><a href="#">Department 1</a></li>
+                        <li><a href="#">Department 2</a></li>
+                        <li><a href="#">Department 3</a></li>
+                        <li><a href="#">Department 4</a></li>
+                        <li><a href="#">Department 5</a></li>
+                        <li><a href="#">Department 6</a></li>
+                        <li><a href="#">Department 7</a></li>
+                    </ul>
+                </section>
+            </div>
+        </footer>
+        <script src="/js/jquery-2.1.3.min.js"></script>
+        <script src="/js/bootstrap.min.js"></script>
+        {% block script %}{% endblock %}
+    </body>
+</html>
