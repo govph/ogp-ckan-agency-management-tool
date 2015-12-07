@@ -41,7 +41,7 @@ https://cloud.google.com/appengine/docs/python/gettingstartedpython27/introducti
 ---
 
 
-## About Open Data Philippines
+# About Open Data Philippines
 
 As one of the eight founding states of the Open Government Partnership, the [Philippine government][1] is committed to open governance through initiatives such as this.
 
