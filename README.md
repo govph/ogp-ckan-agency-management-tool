@@ -37,3 +37,20 @@ Read the getting started guide of AppEngine. You may also skip to the last part 
 
 https://cloud.google.com/appengine/docs/python/gettingstartedpython27/introduction
 
+
+---
+
+
+## About Open Data Philippines
+
+As one of the eight founding states of the Open Government Partnership, the [Philippine government][1] is committed to open governance through initiatives such as this.
+
+Data.gov.ph aims to make national government data searchable, accessible, and useful, with the help of the different agencies of government, and with the participation of the public.
+
+The primary goal of data.gov.ph is to foster a citizenry empowered to make informed decisions, and to promote efficiency and transparency in government.
+
+Learn more about [Open Data PH][2]{:target="_blank"} and our [data policy statement][3]{:target="_blank"}.
+
+[1]: http://www.gov.ph/
+[2]: http://data.gov.ph/about
+[3]: http://data.gov.ph/about/data-policy-statement
