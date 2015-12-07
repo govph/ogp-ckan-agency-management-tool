@@ -49,7 +49,7 @@ Data.gov.ph aims to make national government data searchable, accessible, and us
 
 The primary goal of data.gov.ph is to foster a citizenry empowered to make informed decisions, and to promote efficiency and transparency in government.
 
-Learn more about [Open Data PH][2]{:target="_blank"} and our [data policy statement][3]{:target="_blank"}.
+Learn more about [Open Data PH][2] and our [data policy statement][3].
 
 [1]: http://www.gov.ph/
 [2]: http://data.gov.ph/about
